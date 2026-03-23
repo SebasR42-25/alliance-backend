@@ -17,8 +17,6 @@ export class NotificationsGateway {
     client.join(`notify_${userId}`);
     console.log(`Usuario ${userId} suscrito a notificaciones`);
   }
-
-  // Método para emitir notificaciones desde cualquier servicio
   sendNotification(
     userId: string,
     data: { type: string; message: string; payload?: any },
