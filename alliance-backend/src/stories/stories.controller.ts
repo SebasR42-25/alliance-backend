@@ -18,12 +18,10 @@ import {
 import { StoriesService } from './stories.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { GetUser } from '../auth/decorators/get-user.decorator';
-
 @ApiTags('Historias (24h)')
 @Controller('stories')
 export class StoriesController {
   constructor(private readonly storiesService: StoriesService) {}
-
   @Post()
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -36,13 +34,11 @@ export class StoriesController {
   ) {
     return this.storiesService.create(file, user.userId);
   }
-
   @Get()
   @ApiOperation({ summary: 'Obtener historias activas de las últimas 24h' })
   async findAll() {
     return this.storiesService.findAllActive();
   }
-
   @Patch(':id/view')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)

@@ -1,12 +1,10 @@
 import { IsOptional, IsString, IsArray } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-
 export class UpdateUserDto {
   @ApiProperty({ example: 'Cali, Colombia', required: false })
   @IsString()
   @IsOptional()
   location?: string;
-
   @ApiProperty({
     example: 'Ingeniero de Sistemas apasionado por el Backend',
     required: false,
@@ -14,7 +12,6 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   bio?: string;
-
   @ApiProperty({
     example: ['NestJS', 'TypeScript', 'MongoDB'],
     required: false,
@@ -22,7 +19,6 @@ export class UpdateUserDto {
   @IsArray()
   @IsOptional()
   skills?: string[];
-
   @ApiProperty({ example: 'https://mi-foto.com/perfil.jpg', required: false })
   @IsString()
   @IsOptional()

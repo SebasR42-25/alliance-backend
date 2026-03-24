@@ -6,7 +6,6 @@ import {
   MaxLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-
 export class CreateReelDto {
   @ApiProperty({
     example: 'https://mi-storage.com/alianza-reel.mp4',
@@ -15,7 +14,6 @@ export class CreateReelDto {
   @IsUrl({}, { message: 'Debe ser una URL válida' })
   @IsNotEmpty()
   videoUrl: string;
-
   @ApiProperty({
     example: 'Mi primer día en Alliance #tech #networking',
     required: false,

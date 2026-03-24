@@ -7,26 +7,19 @@ import {
   Patch,
   Param,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiTags,
-  ApiOperation,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { GetUser } from '../auth/decorators/get-user.decorator';
-
 interface RequestUser {
   userId: string;
   email: string;
 }
-
 @ApiTags('Publicaciones (Feed)')
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
-
   @Post()
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -37,13 +30,11 @@ export class PostsController {
   ) {
     return this.postsService.create(createPostDto, user.userId);
   }
-
   @Get()
   @ApiOperation({ summary: 'Obtener todas las publicaciones' })
   async findAll() {
     return this.postsService.findAll();
   }
-
   @Patch(':id/like')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -51,7 +42,6 @@ export class PostsController {
   async toggleLike(@Param('id') id: string, @GetUser() user: RequestUser) {
     return this.postsService.toggleLike(id, user.userId);
   }
-
   @Post(':id/comments')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)

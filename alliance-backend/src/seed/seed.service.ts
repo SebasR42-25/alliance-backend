@@ -8,15 +8,12 @@ import { User } from '../users/schemas/user.schema';
 import { Company } from '../companies/schemas/company.schema';
 import { Job } from '../jobs/schemas/job.schema';
 import { CreateUserData } from '../users/users.service';
-
-// Definimos una interfaz que extiende la de creación con los campos del esquema
 interface SeedUser extends CreateUserData {
   location: string;
   bio: string;
   skills: string[];
   profilePicture: string;
 }
-
 @Injectable()
 export class SeedService {
   constructor(
@@ -24,12 +21,10 @@ export class SeedService {
     @InjectModel(Company.name) private companyModel: Model<Company>,
     @InjectModel(Job.name) private jobModel: Model<Job>,
   ) {}
-
   async runSeed() {
     await this.userModel.deleteMany({});
     await this.companyModel.deleteMany({});
     await this.jobModel.deleteMany({});
-
     const companies = await this.companyModel.insertMany([
       {
         name: 'Zonamerica Cali',
@@ -47,12 +42,8 @@ export class SeedService {
         description: 'Soporte para startups de Silicon Valley.',
       },
     ]);
-
     const passwordHash = await bcrypt.hash('Password123!', 10);
-
-    // Ahora usamos nuestra interfaz extendida
     const users: SeedUser[] = [];
-
     for (let i = 0; i < 10; i++) {
       users.push({
         name: faker.person.fullName(),
@@ -64,9 +55,7 @@ export class SeedService {
         profilePicture: faker.image.avatar(),
       });
     }
-
     await this.userModel.insertMany(users);
-
     const jobs = [
       {
         title: 'Backend Developer (NestJS)',
@@ -86,7 +75,6 @@ export class SeedService {
       },
     ];
     await this.jobModel.insertMany(jobs);
-
     return { message: 'Seed ejecutado con éxito y tipado fuerte.' };
   }
 }

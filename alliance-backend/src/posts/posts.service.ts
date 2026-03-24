@@ -9,7 +9,6 @@ import { Post } from './schemas/post.schema';
 import { User } from '../users/schemas/user.schema';
 import { CreatePostDto } from './dto/create-post.dto';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
-
 @Injectable()
 export class PostsService {
   constructor(
@@ -17,7 +16,6 @@ export class PostsService {
     @InjectModel(User.name) private userModel: Model<User>,
     private readonly notificationsGateway: NotificationsGateway,
   ) {}
-
   async create(createPostDto: CreatePostDto, userId: string) {
     const newPost = new this.postModel({
       ...createPostDto,
@@ -25,7 +23,6 @@ export class PostsService {
     });
     return (await newPost.save()).populate('author', 'name profilePicture');
   }
-
   async findAll() {
     return this.postModel
       .find()
@@ -34,7 +31,6 @@ export class PostsService {
       .populate('comments.user', 'name profilePicture')
       .exec();
   }
-
   async findByUserId(userId: string) {
     return this.postModel
       .find({ author: new Types.ObjectId(userId) })
@@ -42,24 +38,19 @@ export class PostsService {
       .populate('author', 'name profilePicture')
       .exec();
   }
-
   async toggleLike(postId: string, userId: string) {
     const post = await this.postModel.findById(postId);
     if (!post) throw new NotFoundException('Publicación no encontrada');
-
     const userObjId = new Types.ObjectId(userId);
     const likeIndex = post.likes.indexOf(userObjId);
     let isLiked = false;
-
     if (likeIndex > -1) {
       post.likes.splice(likeIndex, 1);
     } else {
       post.likes.push(userObjId);
       isLiked = true;
     }
-
     await post.save();
-
     if (isLiked && post.author.toString() !== userId) {
       const liker = await this.userModel.findById(userId);
       this.notificationsGateway.sendNotification(post.author.toString(), {
@@ -68,23 +59,18 @@ export class PostsService {
         payload: { postId: post._id, likerName: liker?.name },
       });
     }
-
     return { likesCount: post.likes.length, isLiked };
   }
-
   async addComment(postId: string, userId: string, text: string) {
     const post = await this.postModel.findById(postId);
     if (!post) throw new NotFoundException('Publicación no encontrada');
-
     const newComment = {
       user: new Types.ObjectId(userId),
       text,
       createdAt: new Date(),
     };
-
     post.comments.push(newComment);
     await post.save();
-
     if (post.author.toString() !== userId) {
       const commenter = await this.userModel.findById(userId);
       this.notificationsGateway.sendNotification(post.author.toString(), {
@@ -93,18 +79,14 @@ export class PostsService {
         payload: { postId: post._id, comment: text },
       });
     }
-
     return post.populate('comments.user', 'name profilePicture');
   }
   async remove(postId: string, userId: string) {
     const post = await this.postModel.findById(postId);
     if (!post) throw new NotFoundException('Post no encontrado');
-
-    // Verificamos si el que intenta borrar es el mismo que creó el post
     if (post.author.toString() !== userId) {
       throw new ForbiddenException('No tienes permiso para borrar este post');
     }
-
     await post.deleteOne();
     return { message: 'Post eliminado correctamente' };
   }

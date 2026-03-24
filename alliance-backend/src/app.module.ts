@@ -13,9 +13,8 @@ import { ReelsModule } from './reels/reels.module';
 import { StoriesModule } from './stories/stories.module';
 import { ChatModule } from './chat/chat.module';
 import { SeedModule } from './seed/seed.module';
-import { NotificationsModule } from './notifications/notifications.module'; // Importamos el módulo de notis
+import { NotificationsModule } from './notifications/notifications.module';
 import { CloudinaryModule } from './common/cloudinary/cloudinary.module';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -38,7 +37,7 @@ import { CloudinaryModule } from './common/cloudinary/cloudinary.module';
     StoriesModule,
     ChatModule,
     SeedModule,
-    NotificationsModule, // Registramos el módulo globalmente
+    NotificationsModule,
     CloudinaryModule,
   ],
   controllers: [AppController],

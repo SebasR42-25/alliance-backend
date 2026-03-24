@@ -25,13 +25,10 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { CloudinaryService } from '../common/cloudinary/cloudinary.service';
-
-// Definimos la interfaz para que TypeScript reconozca el objeto user
 interface RequestUser {
   userId: string;
   email: string;
 }
-
 @ApiTags('Usuarios')
 @Controller('users')
 export class UsersController {
@@ -39,7 +36,6 @@ export class UsersController {
     private readonly usersService: UsersService,
     private readonly cloudinaryService: CloudinaryService,
   ) {}
-
   @Patch('me/avatar')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -55,7 +51,7 @@ export class UsersController {
     },
   })
   async uploadAvatar(
-    @GetUser() user: RequestUser, // Usamos la interfaz
+    @GetUser() user: RequestUser,
     @UploadedFile() file: Express.Multer.File,
   ) {
     if (!file) {
@@ -66,7 +62,6 @@ export class UsersController {
       profilePicture: result.secure_url,
     });
   }
-
   @Get('me')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -74,7 +69,6 @@ export class UsersController {
   async getProfile(@GetUser() user: RequestUser) {
     return this.usersService.findById(user.userId);
   }
-
   @Patch('me')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -85,7 +79,6 @@ export class UsersController {
   ) {
     return this.usersService.update(user.userId, updateUserDto);
   }
-
   @Get('network')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -93,14 +86,12 @@ export class UsersController {
   async getNetwork(@GetUser() user: RequestUser) {
     return this.usersService.getNetwork(user.userId);
   }
-
   @Get('search')
   @ApiOperation({ summary: 'Buscador global de profesionales y empleos' })
   async globalSearch(@Query('q') query: string) {
     if (!query) throw new BadRequestException('Debes proporcionar un término');
     return this.usersService.searchGlobal(query);
   }
-
   @Post('connections/:id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -111,7 +102,6 @@ export class UsersController {
   ) {
     return this.usersService.sendConnectionRequest(user.userId, targetId);
   }
-
   @Patch('connections/accept/:senderId')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -122,7 +112,6 @@ export class UsersController {
   ) {
     return this.usersService.acceptConnection(user.userId, senderId);
   }
-
   @Delete('connections/reject/:senderId')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -133,13 +122,11 @@ export class UsersController {
   ) {
     return this.usersService.rejectConnection(user.userId, senderId);
   }
-
   @Get(':id')
   @ApiOperation({ summary: 'Obtener perfil público por ID' })
   async findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
-
   @Get()
   @ApiOperation({ summary: 'Listar todos los usuarios' })
   async findAll() {

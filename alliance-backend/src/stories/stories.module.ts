@@ -3,8 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { StoriesService } from './stories.service';
 import { StoriesController } from './stories.controller';
 import { Story, StorySchema } from './schemas/story.schema';
-import { CloudinaryModule } from '../common/cloudinary/cloudinary.module'; // 1. Importa el módulo
-
+import { CloudinaryModule } from '../common/cloudinary/cloudinary.module';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Story.name, schema: StorySchema }]),

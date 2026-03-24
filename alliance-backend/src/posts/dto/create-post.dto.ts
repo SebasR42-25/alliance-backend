@@ -1,6 +1,5 @@
 import { IsNotEmpty, IsString, IsOptional, IsArray } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-
 export class CreatePostDto {
   @ApiProperty({
     example: '¡Acabo de terminar mi primer sprint en Alliance!',
@@ -9,7 +8,6 @@ export class CreatePostDto {
   @IsString()
   @IsNotEmpty()
   content: string;
-
   @ApiProperty({
     example: 'https://imagen-de-ejemplo.com/foto.jpg',
     required: false,
@@ -17,7 +15,6 @@ export class CreatePostDto {
   @IsString()
   @IsOptional()
   imageUrl?: string;
-
   @ApiProperty({ example: ['#tech', '#networking'], required: false })
   @IsArray()
   @IsOptional()
