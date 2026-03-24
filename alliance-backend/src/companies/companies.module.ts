@@ -3,8 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CompaniesService } from './companies.service';
 import { CompaniesController } from './companies.controller';
 import { Company, CompanySchema } from './schemas/company.schema';
-import { Job, JobSchema } from '../jobs/schemas/job.schema'; // <-- Importamos el esquema de Empleos
-
+import { Job, JobSchema } from '../jobs/schemas/job.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([

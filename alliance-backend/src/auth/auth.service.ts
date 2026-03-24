@@ -8,14 +8,12 @@ import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
-
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
-
   async register(registerDto: RegisterDto) {
     const { name, email, password } = registerDto;
     const userExists = await this.usersService.findByEmail(email);
@@ -38,23 +36,17 @@ export class AuthService {
       },
     };
   }
-
   async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
-
     const user = await this.usersService.findByEmail(email);
     if (!user) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
-
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
-
-    // Convertimos explícitamente el ObjectId de MongoDB a String (.toString())
     const payload = { sub: user._id.toString(), email: user.email };
-
     return {
       message: 'Inicio de sesión exitoso',
       access_token: await this.jwtService.signAsync(payload),

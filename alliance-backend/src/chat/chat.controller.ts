@@ -3,25 +3,21 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ChatService } from './chat.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { GetUser } from '../auth/decorators/get-user.decorator';
-
 interface RequestUser {
   userId: string;
   email: string;
 }
-
 @ApiTags('Chat (Historial)')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
-
   @Get('conversations')
   @ApiOperation({ summary: 'Obtener la lista de chats activos del usuario' })
   async getConversations(@GetUser() user: RequestUser) {
     return this.chatService.getUserConversations(user.userId);
   }
-
   @Get('conversations/:id/messages')
   @ApiOperation({
     summary: 'Obtener el historial de mensajes de un chat específico',

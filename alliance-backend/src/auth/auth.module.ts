@@ -4,12 +4,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
-import { JwtStrategy } from './strategies/jwt.strategy'; // <-- Importamos nuestra estrategia
-
+import { JwtStrategy } from './strategies/jwt.strategy';
 @Module({
   imports: [
     UsersModule,
-    // Configuramos el JwtModule para que lea nuestro secreto desde el .env
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -20,6 +18,6 @@ import { JwtStrategy } from './strategies/jwt.strategy'; // <-- Importamos nuest
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy], // <-- Añadimos el JwtStrategy a los proveedores
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

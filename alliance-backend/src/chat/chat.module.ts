@@ -9,7 +9,6 @@ import {
 import { Message, MessageSchema } from './schemas/message.schema';
 import { User, UserSchema } from '../users/schemas/user.schema'; // 1. Importa User
 import { CloudinaryModule } from '../common/cloudinary/cloudinary.module'; // 2. Importa Cloudinary
-
 @Module({
   imports: [
     MongooseModule.forFeature([
